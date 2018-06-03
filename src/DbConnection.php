@@ -9,26 +9,16 @@ class DbConnection
 
     private function __construct()
     {
-        try {
-            $this->conn = new \SQLite3('database/cart.sqlite3');
+            require_once __DIR__.'/../config/db.php';
 
-            $this->conn->exec("CREATE TABLE IF NOT EXISTS orders(
-                                      id  INTEGER PRIMARY KEY AUTOINCREMENT, 
-                                      items TEXT,
-                                      user_id INT,
-                                      sum DECIMAL(10, 2),
-                                      sum_with_discount DECIMAL(10, 2))");
-        } catch (\PDOException $e) {
-            // Print PDOException message
-            echo $e->getMessage();
+            $this->conn = new \mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         }
-    }
 
     public static function getInstance()
     {
         if(!self::$_instance)
         {
-            self::$_instance = new DbConnection();
+            self::$_instance = new self();
         }
 
         return self::$_instance;
@@ -37,5 +27,9 @@ class DbConnection
     public function getConnection()
     {
         return $this->conn;
+    }
+
+    private function __clone()
+    {
     }
 }

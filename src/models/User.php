@@ -1,5 +1,5 @@
 <?php
-namespace SashaMart\TestAutorization;
+namespace SashaMart\TestAutorization\models;
 
 class User
 {

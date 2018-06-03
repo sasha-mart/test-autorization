@@ -1,5 +1,5 @@
 <?php
-namespace SashaMart\TestAutorization;
+namespace SashaMart\TestAutorization\models;
 
 class Auth
 {
@@ -33,12 +33,16 @@ class Auth
 
     public function validate(): bool
     {
-
+        var_dump($this->validatePhone(), $this->validateName());
+        if ($this->validatePhone() && $this->validateName() && $this->validateCode())
+            return true;
+        else
+            return false;
     }
 
-    private function validatePhone(): bool
+    public function validatePhone(): bool
     {
-        if (preg_match('', $this->phone))
+        if (preg_match('/^\+7 \(\d{3}\) \d{3}\-\d{2}\-\d{2}$/', $this->phone))
             return true;
         else {
             $this->validateErrors['phone'] = 'Телефон должен быть введен в формате +7 (111) 111-11-11';
@@ -46,8 +50,23 @@ class Auth
         }
     }
 
-    private function validateCode(): bool
+    public function validateName(): bool
+    {
+        if (!empty($this->name))
+            return true;
+        else {
+            $this->validateErrors['name'] = 'Необходимо заполнить поле.';
+            return false;
+        }
+    }
+
+    public function validateCode(): bool
+    {
+        return true;
+    }
+
+    /*private function getLastCode(): string
     {
 
-    }
+    }*/
 }

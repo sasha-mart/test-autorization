@@ -1,4 +1,4 @@
 <?php
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-echo 'Hello, world!';
+\SashaMart\TestAutorization\Router::getPage(trim($_SERVER['REQUEST_URI']));

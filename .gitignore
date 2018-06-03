@@ -1,3 +1,4 @@
 /vendor/
 /.idea/
 /tests/build/
+/config/db.php

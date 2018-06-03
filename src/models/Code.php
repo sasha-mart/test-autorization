@@ -2,10 +2,12 @@
 
 namespace SashaMart\TestAutorization\models;
 
+use phpDocumentor\Reflection\Types\Void_;
 use SashaMart\TestAutorization\DbConnection;
 
 class Code
 {
+    private $id;
     private $value = null;
     private $phone;
     private $datetime = null;
@@ -38,16 +40,27 @@ class Code
     {
         $curTime = date("Y-m-d H:i:s");
         $startPeriod = date("Y-m-d H:i:s", strtotime($curTime . ' - 120 seconds'));
-        $sql = "SELECT value FROM codes WHERE datetime BETWEEN ? AND ? AND phone = ? ORDER BY datetime DESC";
+        $sql = "SELECT id, value FROM codes WHERE datetime BETWEEN ? AND ? AND phone = ? ORDER BY datetime DESC";
         $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param('sss', $startPeriod, $curTime, $this->phone);
         $stmt->execute();
         $mysqliResult = $stmt->get_result();
         $arr = $mysqliResult->fetch_array(MYSQLI_ASSOC);
 
+        if (isset($arr['id']))
+            $this->id = $arr['id'];
+
         if (isset($arr['value']))
             return $arr['value'];
         else
             return null;
+    }
+
+    public function setSuccess() : void
+    {
+        $sql = "UPDATE codes SET success=1 WHERE id=?";
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->bind_param('i', $this->id);
+        $stmt->execute();
     }
 }

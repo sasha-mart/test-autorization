@@ -33,12 +33,4 @@ class MainTest extends TestCase
         $auth = new Auth('Sasha', '8 927 12 555 12');
         $this->assertEquals($auth->validatePhone(), false);
     }
-
-    public function testDbConnection()
-    {
-        $db = DbConnection::getInstance();
-        $connection = $db->getConnection();
-
-        self::assertEquals($connection, '');
-    }
 }

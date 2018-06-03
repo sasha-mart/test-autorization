@@ -4,7 +4,7 @@ namespace SashaMart\TestAutorization;
 
 trait Utils
 {
-    function secureEntry(string $entry): string
+    static function secureEntry(string $entry): string
     {
         $result = trim($entry);
         $result = strip_tags($result);

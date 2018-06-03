@@ -33,7 +33,6 @@ class Auth
 
     public function validate(): bool
     {
-        var_dump($this->validatePhone(), $this->validateName());
         if ($this->validatePhone() && $this->validateName() && $this->validateCode())
             return true;
         else
@@ -62,11 +61,25 @@ class Auth
 
     public function validateCode(): bool
     {
-        return true;
+        $code = new Code($this->phone);
+        if (empty($this->code)) {
+            $this->validateErrors['code'] = 'Необходимо ввести код подтверждения.';
+            return false;
+        }
+
+        if ($this->code == $code->getCurrentValue()) {
+            $code->setSuccess();
+            return true;
+        }
+        else {
+            $this->validateErrors['code'] = 'Неверно введен код подтверждения.';
+            return false;
+        }
     }
 
-    /*private function getLastCode(): string
+    public function login($name, $phone): void
     {
-
-    }*/
+        $user = new User($name, $phone);
+        $user->auth();
+    }
 }

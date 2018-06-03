@@ -8,10 +8,13 @@ class Router
     {
         $controller = new Controller();
         $requestUri = explode('/', $requestUri);
-        if ($requestUri[0] == '' && method_exists($controller,'index'))
+
+        if ($requestUri[1] == '' && method_exists($controller,'index'))
             $controller->index();
-        elseif (method_exists($controller, $requestUri[0]))
-            $controller->{$requestUri}();
+        elseif (method_exists($controller, $requestUri[1])) {
+            $method = $requestUri[1];
+            $controller->$method();
+        }
         else {
             header('HTTP/1.0 404 not found');
             echo "Страница не найдена";
